@@ -31,4 +31,14 @@ def edit(request, pk):
     return render(request, "form.html", data)
 
 def update(request, pk):
-    return render(request, "index.html")
+    data = {}
+    data['db'] = Carros.objects.get(pk=pk)
+    form = CarrosForm(request.POST or None, instance=data['db'])
+    if form.is_valid():
+        form.save()
+        return redirect("home")
+
+def delete(request, pk):
+    db = Carros.objects.get(pk=pk)
+    db.delete()
+    return redirect("home")
